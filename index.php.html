@@ -1,0 +1,125 @@
+<?php
+// Include config file
+require_once "includes/config.php";
+// Define variables and initialize with empty values
+$employeename = $address = $salary = "";
+$name_err = $address_err = $salary_err = "";
+// Processing form data when form is submitted
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+ // Validate name
+ $input_name = trim($_POST["employeename"]);
+ if(empty($input_name)){
+ $name_err = "Please enter a name.";
+ } elseif(!filter_var($input_name, FILTER_VALIDATE_REGEXP, 
+array("options"=>array("regexp"=>"/^[a-zA-Z\s]+$/")))){
+ $name_err = "Please enter a valid name.";
+ } else{
+ $name = $input_name; }
+ 
+ // Validate address
+ $input_address = trim($_POST["address"]);
+ if(empty($input_address)){
+ $address_err = "Please enter an address."; 
+ } else{
+ $address = $input_address;
+ }
+ 
+ // Validate salary
+ $input_salary = trim($_POST["salary"]);
+ if(empty($input_salary)){
+ $salary_err = "Please enter the salary amount."; 
+ } elseif(!ctype_digit($input_salary)){
+ $salary_err = "Please enter a positive integer value.";
+ } else{
+ $salary = $input_salary;
+ }
+ 
+ // Check input errors before inserting in database
+ if(empty($name_err) && empty($address_err) && empty($salary_err)){
+ // Prepare an insert statement
+ $sql = "INSERT INTO employees (name, address, salary) VALUES (?, ?, 
+?)";
+ if($stmt = $mysqli->prepare($sql)){
+ // Bind variables to the prepared statement as parameters
+ $stmt->bind_param("sss", $param_name, $param_address, 
+$param_salary);
+ 
+ // Set parameters
+ $param_name = $name;
+ $param_address = $address;
+ $param_salary = $salary;
+ 
+ // Attempt to execute the prepared statement
+ if($stmt->execute()){
+ // Records created successfully. Redirect to landing page
+ header("location: view.php");
+ exit();
+ } else{
+ echo "Something went wrong. Please try again later.";
+ }
+ }
+ 
+ // Close statement
+ $stmt->close();
+ }
+ 
+ // Close connection
+ $mysqli->close();
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+	<title>PHP PROJECT1</title>
+</head>
+<body>
+     <img src="assets/images/banner2.jpg" style="width:100%" >
+	 <?php include('includes/nav.php'); ?>
+     <div class="container">
+	 
+	     <form action="<?php 
+echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+		<div class="row">
+		    <div class="col-25">
+		     <label>Employee Name</label>
+		</div>
+		<div class="col-75">
+		     <input type="text" name="employeename" placeholder="Employee Name" value="<?php echo $employeename; ?>" />
+			 <span style="color:red;"><?php echo $name_err;?></span>
+		</div>
+	</div>
+	
+	
+	<div class="row">
+	     <div class="col-25">
+		      <label>Address</label>
+		 </div>
+		 <div class="col-75">
+		      <input type="text" name="address" placeholder="Address" value="<?php echo $address; ?>" />
+			 <span style="color:red;"><?php echo $address_err;?></span>
+		 </div>
+	</div>
+	
+	
+	<div class="row">
+	     <div class="col-25">
+		      <label>Salary</label>
+		 </div>
+		 <div class="col-75">
+		      <input type="text" name="salary" placeholder="00.00" value="<?php echo $salary; ?>" />
+			 <span style="color:red;"><?php echo $salary_err;?></span>
+		 </div>
+	</div>
+	<br />
+	<div class="row">
+	     <input type="Submit" value="Submit">
+	</div>
+	</form>
+</div>
+
+		  
+ 
+ </body>
+ </html>

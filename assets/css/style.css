@@ -1,0 +1,93 @@
+body {
+	font-family: "Century Gothic";
+}
+
+*  {
+	 box-sizing: border-box
+}
+.container {
+	border-radius: 5px;
+	background-color: #f2f2f2;
+	padding: 20px;
+}
+	
+label {
+	padding: 12px 12px 12px 0;
+	display: inline-block;
+}
+
+input[type=text], select, textarea {
+	width: 100%;
+	padding: 12px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	resize: vertical;
+	
+}
+
+input[type=submit] {
+	float: right;
+	background-color: #4CAF50;
+	color: white;
+	padding: 12px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+input[type=submit]:hover {
+	background-color: #45a049;
+}
+
+.col-25 {
+	float: left;
+	width: 25%;
+	margin-top: 6px;
+}
+.col-75 {
+	float: left;
+	width: 75%;
+	margin-top: 6px;
+}
+
+.row:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+@media screen and (max-width:600px) {
+	.col-25, .col-75, input[type=submit]{
+		width:100%;
+		margin-top: 0;
+	}
+
+}
+
+/* style the top navigation bar */
+.navbar {
+	overflow: hidden; /* Hide overflow */
+	background-color: #333; /* Dark background color */
+}
+
+/* Style the navigation bar links */
+.navbar a {
+	float: left; /* Make sure that the links stay side-by-side */
+	display: block; /* Change the display to block, for responsive reasons */
+	color: white; /* White text color */
+	text-align: center; /* Center the text */
+	padding: 14px 20px; /* Add some padding */
+	text-decoration: none; /* Remove underline */
+}
+
+/* Right-aligned link */
+.navbar a:right {
+	float: right; /* Float a link to the right */
+}
+
+/* Change color on hover/mouse-over */
+.navbar a:hover {
+	background-color: #ddd; /* Grey background color */
+	color: black; /* Black text color */
+}
+	
